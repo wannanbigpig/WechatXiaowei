@@ -1,9 +1,9 @@
 <?php
     /**
-     * uploadMedia.php
+     * UploadMedia.php
      *
      * Created by PhpStorm.
-     * author: liuml  <liumenglei0211@163.com>
+     * author: liuml  
      * DateTime: 2018/8/24  13:59
      */
 

@@ -3,7 +3,7 @@
      * BaseWechat.php
      *
      * Created by PhpStorm.
-     * author: liuml  <liumenglei0211@163.com>
+     * author: liuml  
      * DateTime: 2018/8/21  11:28
      */
 
@@ -16,7 +16,7 @@
 
     /**
      * Class BaseWechat
-     * @package App\Wechat\V1\Services\wechat
+     * @package App\WechatXiaowei\V1\Services
      */
     class BaseWechat
     {

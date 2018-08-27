@@ -1,9 +1,9 @@
 <?php
     /**
-     * wechatCertificate.php
+     * Certificate.php
      *
      * Created by PhpStorm.
-     * author: liuml  <liumenglei0211@163.com>
+     * author: liuml  
      * DateTime: 2018/8/23  10:50
      */
 
