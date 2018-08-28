@@ -93,7 +93,7 @@
                 'response_body'      => serialize($response_body),
                 'response_header'    => serialize($response_header),
             ];
-
+			// 请求响应信息记录
             $wxXiaowei = new WxXiaowei();
             $wxXiaowei->saveData($data);
 
