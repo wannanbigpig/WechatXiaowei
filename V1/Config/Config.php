@@ -10,8 +10,8 @@
     return [
         'mch_id'              => '*******',    // 服务商商户号
         'serial_no'           => '*****************',    // 商户证书序列号
-        'aes_key'             => '*******',    // 商户证书序列号
-        'diy_key'             => '***************',    // 商户自定义key
+        'aes_key'             => '*******',    // APIv3密钥
+        'diy_key'             => '***************',    // 商户自定义key（签名用到）
         'privateKeyAddr'      => app_path() . '/Wechat/V1/Certificate/*********_key.pem',    // 私钥证书位置
         'sslCertAddr'         => app_path() . '/Wechat/V1/Certificate/*********_cert.pem',    // 证书存放位置
         'publicKeyAddr'       => app_path() . '/Wechat/V1/Certificate/****.pem',    // 包含公钥的解密后明文证书存放位置
