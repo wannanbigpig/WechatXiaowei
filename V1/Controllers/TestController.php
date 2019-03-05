@@ -3,14 +3,11 @@
      * TestController.php
      *
      * Created by PhpStorm.
-     * author: liuml  
+     * author: liuml  <liumenglei0211@163.com>
      * DateTime: 2018/8/20  10:02
      */
 
     namespace App\WechatXiaowei\V1\Controllers;
-
-    use App\WechatXiaowei\V1\Services\wechat;
-    use App\WechatXiaowei\V1\Services\wechatCertificate;
 
     class TestController extends BaseController
     {

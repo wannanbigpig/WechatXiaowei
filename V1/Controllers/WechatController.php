@@ -3,7 +3,7 @@
      * BaseWechatController.php
      *
      * Created by PhpStorm.
-     * author: liuml  
+     * author: liuml  <liumenglei0211@163.com>
      * DateTime: 2018/8/21  11:25
      */
 
@@ -68,7 +68,7 @@
             } catch (WxException $e) {
                 return static::returnData($e->getCode(), $e->getMessage());
             } catch (\Exception $e) {
-                return static::returnData(-1, $e->getMessage(), '', 500);
+                return static::returnData(-1, '服务器错误', '', 500);
             }
         }
 
@@ -79,12 +79,12 @@
         public function enquiryOfApplyStatus()
         {
             try {
-                $res = static::$wechat->enquiryOfApplyStatus(\Request::post());
+                $res = static::$wechat->enquiryOfApplyStatus(\Request::all());
                 return static::returnData(1, '操作成功', $res);
             } catch (WxException $e) {
                 return static::returnData($e->getCode(), $e->getMessage());
             } catch (\Exception $e) {
-                return static::returnData(-1, $e->getMessage(), '', 500);
+                return static::returnData(-1, '服务器错误', '', 500);
             }
         }
 
@@ -100,7 +100,7 @@
             } catch (WxException $e) {
                 return static::returnData($e->getCode(), $e->getMessage());
             } catch (\Exception $e) {
-                return static::returnData(-1, $e->getMessage(), '', 500);
+                return static::returnData(-1, '服务器错误', '', 500);
             }
         }
 
@@ -116,7 +116,7 @@
             } catch (WxException $e) {
                 return static::returnData($e->getCode(), $e->getMessage());
             } catch (\Exception $e) {
-                return static::returnData(-1, $e->getMessage(), '', 500);
+                return static::returnData(-1, '服务器错误', '', 500);
             }
         }
 
@@ -132,7 +132,7 @@
             } catch (WxException $e) {
                 return static::returnData($e->getCode(), $e->getMessage());
             } catch (\Exception $e) {
-                return static::returnData(-1, $e->getMessage(), '', 500);
+                return static::returnData(-1, '服务器错误', '', 500);
             }
         }
 
@@ -148,7 +148,7 @@
             } catch (WxException $e) {
                 return static::returnData($e->getCode(), $e->getMessage());
             } catch (\Exception $e) {
-                return static::returnData(-1, $e->getMessage(), '', 500);
+                return static::returnData(-1, '服务器错误', '', 500);
             }
         }
 
@@ -164,7 +164,7 @@
             } catch (WxException $e) {
                 return static::returnData($e->getCode(), $e->getMessage());
             } catch (\Exception $e) {
-                return static::returnData(-1, $e->getMessage(), '', 500);
+                return static::returnData(-1, '服务器错误', '', 500);
             }
         }
 
@@ -180,7 +180,7 @@
             } catch (WxException $e) {
                 return static::returnData($e->getCode(), $e->getMessage());
             } catch (\Exception $e) {
-                return static::returnData(-1, $e->getMessage(), '', 500);
+                return static::returnData(-1, '服务器错误', '', 500);
             }
         }
 
@@ -196,7 +196,79 @@
             } catch (WxException $e) {
                 return static::returnData($e->getCode(), $e->getMessage());
             } catch (\Exception $e) {
-                return static::returnData(-1, $e->getMessage(), '', 500);
+                return static::returnData(-1, '服务器错误', '', 500);
             }
         }
+
+        /**
+         * getApplyEnterList 获取入驻列表
+         * @return \Illuminate\Http\JsonResponse
+         * @author   liuml  <liumenglei0211@163.com>
+         * @DateTime 2018/9/19  15:20
+         */
+        public function getApplyEnterList(){
+            try {
+                $res = static::$wechat->getApplyEnterList(\Request::all());
+                return static::returnData(1, '操作成功', $res);
+            } catch (WxException $e) {
+                return static::returnData($e->getCode(), $e->getMessage());
+            } catch (\Exception $e) {
+                return static::returnData(-1, '服务器错误', '', 500);
+            }
+        }
+
+        /**
+         * getApplyEnterInfo 获取入驻详情
+         * @return \Illuminate\Http\JsonResponse
+         * @author   liuml  <liumenglei0211@163.com>
+         * @DateTime 2018/9/19  15:22
+         */
+        public function getApplyEnterInfo(){
+            try {
+                $res = static::$wechat->getApplyEnterInfo(\Request::get('apply_id'));
+                return static::returnData(1, '操作成功', $res);
+            } catch (WxException $e) {
+                return static::returnData($e->getCode(), $e->getMessage());
+            } catch (\Exception $e) {
+                return static::returnData(-1, '服务器错误', '', 500);
+            }
+        }
+
+        /**
+         * submitUpGrade 商户升级接口
+         * @return \Illuminate\Http\JsonResponse
+         * @author   liuml  <liumenglei0211@163.com>
+         * @DateTime 2019-03-04  12:01
+         */
+        public function submitUpGrade()
+        {
+            try {
+                $res = static::$wechat->submitUpGrade(\Request::post());
+                return static::returnData(1, '操作成功', $res);
+            } catch (WxException $e) {
+                return static::returnData($e->getCode(), $e->getMessage());
+            } catch (\Exception $e) {
+                return static::returnData(-1, '服务器错误', '', 500);
+            }
+        }
+
+        /**
+         * upGradeIsThrough 商户升级状态查询
+         * @return \Illuminate\Http\JsonResponse
+         * @author   liuml  <liumenglei0211@163.com>
+         * @DateTime 2019-03-04  12:02
+         */
+        public function upGradeIsThrough()
+        {
+            try {
+                $res = static::$wechat->upGradeIsThrough(\Request::post());
+                return static::returnData(1, '操作成功', $res);
+            } catch (WxException $e) {
+                return static::returnData($e->getCode(), $e->getMessage());
+            } catch (\Exception $e) {
+                return static::returnData(-1, '服务器错误', '', 500);
+            }
+        }
+
+
     }

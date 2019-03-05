@@ -1,9 +1,9 @@
 <?php
     /**
-     * Certificate.php
+     * wechatCertificate.php
      *
      * Created by PhpStorm.
-     * author: liuml  
+     * author: liuml  <liumenglei0211@163.com>
      * DateTime: 2018/8/23  10:50
      */
 
@@ -14,7 +14,7 @@
 
     /**
      * Trait wechatCertificate
-     * @package App\WechatXiaowei\V1\Services\traits
+     * @package App\WechatXiaowei\V1\Services\wechat\traits
      */
     trait Certificate
     {
@@ -38,13 +38,13 @@
         }
 
         /**
-         * getCertificates  下载平台证书
+         * getCertificates  下载平台证书 1.0
          * @return mixed
          */
-        public function downloadCertificates()
+        public function downloadCertificatesold()
         {
             try {
-                $url = self::WXAPIHOST . 'v3/certificates';
+                $url = self::WXAPIHOST . 'risk/getcertficates';
                 // 请求随机串
                 $nonce_str = $this->getRandChar();
                 // 当前时间戳
@@ -54,16 +54,17 @@
                 // 签名值
                 $signature = $this->encryptSign($signContent);
                 // 含有服务器用于验证商户身份的凭证
-                $authorization  = 'WECHATPAY2-SHA256-RSA2048 mchid="' . $this->mch_id . '",nonce_str="' . $nonce_str . '",signature="' . $signature . '",timestamp="' . $timestamp . '",serial_no="' . $this->serial_no . '"';
-                $curl_v         = curl_version();
-                $header         = [
+                $authorization = 'WECHATPAY2-SHA256-RSA2048 mchid="' . $this->mch_id . '",nonce_str="' . $nonce_str . '",signature="' . $signature . '",timestamp="' . $timestamp . '",serial_no="' . $this->serial_no . '"';
+                $curl_v        = curl_version();
+                $header        = [
                     'Accept:application/json',
                     // 'Accept-Language:zh-CN',    // 默认 zh-CN 可以不填
                     'Authorization:' . $authorization,
                     'Content-Type:application/json',
                     'User-Agent:curl/' . $curl_v['version'],
                 ];
-                $result         = $this->httpsRequest($url, NULL, $header);
+                $result        = $this->httpsRequest($url, NULL, $header);
+                // print_r($result);die;
                 $responseHeader = $this->parseHeaders($result[2]);
                 $http_code      = $result[1];
                 $responseBody   = json_decode($result[0], true);
@@ -73,7 +74,48 @@
                     throw new \Exception($responseBody['code'] . '----' . $responseBody['message']);
                 }
             } catch (\Exception $e) {
-                throw new WxException($e->getCode());
+                throw new WxException($e->getCode(), $e->getMessage());
+            }
+        }
+
+        /**
+         * downloadCertificates 2.0
+         * @return mixed
+         * @throws WxException
+         * @author   liuml  <liumenglei0211@163.com>
+         * @DateTime 2019-03-05  11:03
+         */
+        public function downloadCertificates()
+        {
+            try {
+                $data         = [
+                    'mch_id'    => $this->mch_id,
+                    'nonce_str' => $this->getRandChar(),
+                    'sign_type' => 'HMAC-SHA256',
+                    'sign'      => '',
+                ];
+                $data['sign'] = $this->makeSign($data, $data['sign_type']);
+                $url          = self::WXAPIHOST . 'risk/getcertficates';
+                $xml          = $this->toXml($data);
+                // 发起入驻申请请求
+                $result = $this->httpsRequest($url, $xml, [], true);
+                // 处理返回值
+                $rt = $this->disposeReturn($result, [
+                    'mch_id',
+                    'nonce_str',
+                    'sign',
+                    'result_code',
+                    'err_code',
+                    'err_code_des',
+                    'certificates',
+                ]);
+                if ($rt['result_code'] == 'SUCCESS') {
+                    return $this->verifySign($rt['certificates']);
+                } else {
+                    throw new \Exception($rt['code'] . '----' . $rt['message']);
+                }
+            } catch (\Exception $e) {
+                throw new WxException($e->getCode(), $e->getMessage());
             }
         }
 
@@ -95,16 +137,45 @@
         }
 
         /**
-         * verifyHashSign 校验签名
+         * verifyHashSign 校验签名 2.0
          * @param $data
          * @param $signature
          * @return int
          */
-        protected function verifySign($responseHeader, $responseBody)
+        protected function verifySign($responseBody)
         {
             $last_data = $this->newResponseData();
             $new_data  = json_decode($responseBody, true);
             $one       = false;
+            if (empty($last_data)) {
+                // 没有获取到上一次保存在本地的数据视为第一请求下载证书接口
+                $serial_no = $this->getNewCertificates($new_data['data']);
+                if($serial_no != ''){
+                    return $serial_no;
+                }
+            } else {
+                $serial_no = $last_data['serial_no'];
+            }
+
+            $publicKey = $this->getPublicKey();
+            if ($publicKey) {
+                return $this->getNewCertificates($new_data['data'], $last_data);
+            }
+            return 0;
+        }
+
+        /**
+         * verifyHashSign 校验签名 1.0
+         * @param $data
+         * @param $signature
+         * @return int
+         */
+        protected function verifySignold($responseHeader, $responseBody)
+        {
+            $last_data = $this->newResponseData();
+            $new_data  = json_decode($responseBody, true);
+
+            $one = false;
             if (empty($last_data)) {
                 // 没有获取到上一次保存在本地的数据视为第一请求下载证书接口
                 $serial_no = $this->getNewCertificates($new_data['data']);
@@ -290,9 +361,9 @@
 
         /**
          * httpsRequest https请求
-         * @param $url
+         * @param        $url
          * @param string $data
-         * @param array $headers
+         * @param array  $headers
          * @return mixed
          */
         abstract protected function httpsRequest($url, $data = '', array $headers = [], $userCert = false, $timeout = 30);

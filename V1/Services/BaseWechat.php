@@ -3,7 +3,7 @@
      * BaseWechat.php
      *
      * Created by PhpStorm.
-     * author: liuml  
+     * author: liuml  <liumenglei0211@163.com>
      * DateTime: 2018/8/21  11:28
      */
 
@@ -16,7 +16,7 @@
 
     /**
      * Class BaseWechat
-     * @package App\WechatXiaowei\V1\Services
+     * @package App\WechatXiaowei\V1\Services\wechat
      */
     class BaseWechat
     {
@@ -29,6 +29,7 @@
         protected $aes_key;
         // 商户自定义key
         protected $diy_key;
+        protected $uid;
 
         public function __construct()
         {
@@ -38,6 +39,7 @@
             $this->serial_no = $wechatConfig['serial_no'];
             $this->aes_key   = $wechatConfig['aes_key'];
             $this->diy_key   = $wechatConfig['diy_key'];
+            $this->uid       = \Auth::id() ? : 0;
         }
 
         /**
@@ -93,10 +95,9 @@
                 'response_body'      => serialize($response_body),
                 'response_header'    => serialize($response_header),
             ];
-			// 请求响应信息记录
+            // 请求响应信息记录
             $wxXiaowei = new WxXiaowei();
             $wxXiaowei->saveData($data);
-
             return [$response_body, $http_code, $response_header, $error];
         }
 
@@ -156,7 +157,7 @@
 
             $string = $this->toUrlParams($data);
             //签名步骤二：在string后加入KEY
-            $string = $string . "&key=" . $this->diy_key;//. $this->aes_key;
+            $string = $string . "&key=" . $this->diy_key;
 
             //签名步骤三：MD5加密或者HMAC-SHA256
             if ($signType == 'md5') {
@@ -278,6 +279,7 @@
             if ($res[1] == 200) {
                 $rt = $this->fromXml($res[0]);
                 if ($rt['return_code'] != 'SUCCESS') {
+                    \Log::error($rt['return_msg']);
                     throw new WxException(0, $rt['return_msg']);
                 }
                 if ($rt['result_code'] != 'SUCCESS') {

@@ -7,6 +7,8 @@
 
     class BaseController extends Controller
     {
+        use Helpers;
+
         /**
          * 接口全局统一格式返回
          * @param string $code
