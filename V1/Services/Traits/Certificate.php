@@ -110,7 +110,7 @@
                     'certificates',
                 ]);
                 if ($rt['result_code'] == 'SUCCESS') {
-                    return $this->verifySign($rt['certificates']);
+                    return $this->verifySignold($rt['certificates']);
                 } else {
                     throw new \Exception($rt['code'] . '----' . $rt['message']);
                 }
