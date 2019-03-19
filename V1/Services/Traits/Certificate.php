@@ -69,7 +69,7 @@
                 $http_code      = $result[1];
                 $responseBody   = json_decode($result[0], true);
                 if ($http_code == 200 && !isset($responseBody['code'])) {
-                    return $this->verifySign($responseHeader, $result[0]);
+                    return $this->verifySignold($responseHeader, $result[0]);
                 } else {
                     throw new \Exception($responseBody['code'] . '----' . $responseBody['message']);
                 }
@@ -110,7 +110,7 @@
                     'certificates',
                 ]);
                 if ($rt['result_code'] == 'SUCCESS') {
-                    return $this->verifySignold($rt['certificates']);
+                    return $this->verifySign($rt['certificates']);
                 } else {
                     throw new \Exception($rt['code'] . '----' . $rt['message']);
                 }
