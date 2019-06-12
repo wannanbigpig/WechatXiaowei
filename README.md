@@ -1,3 +1,5 @@
+# <font color=red>最新公告</font>
+> <font color=red>小微商户composer扩展包安装使用请点这 [overtrue/wechat](https://github.com/overtrue/wechat)</font>
 # WechatXiaowei
 微信小微商户接口PHP示例
 
