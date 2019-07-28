@@ -1,7 +1,8 @@
 # <font style="color:red">最新公告</font>
-> <font style="color:red">此处不在更新</font>
-> <font style="color:red">小微商户最新的已经合并到了EasyWeChat中，安装使用请点这 [overtrue/wechat](https://github.com/overtrue/wechat)</font>
-> <font style="color:red">composer包使用有问题，你可以在这里提问 [overtrue/wechat：Issues](https://github.com/overtrue/wechat/issues),小微商户模块的问题请@wannanbigpig</font>
+* <font style="color:red">此处不在更新</font>
+
+* <font style="color:red">小微商户最新的已经合并到了EasyWeChat中，安装使用请点这 [overtrue/wechat](https://github.com/overtrue/wechat)</font>
+* <font style="color:red">composer包使用有问题，你可以在这里提问 [overtrue/wechat：Issues](https://github.com/overtrue/wechat/issues),小微商户模块的问题请@wannanbigpig</font>
 # WechatXiaowei
 微信小微商户接口PHP示例
 
